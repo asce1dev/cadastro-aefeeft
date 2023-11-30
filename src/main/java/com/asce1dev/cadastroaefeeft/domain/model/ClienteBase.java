@@ -31,5 +31,6 @@ public class ClienteBase {
 	private String nomeMae;
 	private String estadoCivil;
 	private String tituloEleitor;
+	private String categoria;
 	
 }

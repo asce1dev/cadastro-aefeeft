@@ -27,7 +27,6 @@ public class ClienteAposentado extends ClienteBase {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private String categoria;
 	private String classe;
 	private String padrao;
 	private String identificacaoUnica;
@@ -38,11 +37,11 @@ public class ClienteAposentado extends ClienteBase {
 	
 	@JsonIgnore
 	@CreationTimestamp
-	@Column(nullable = false, columnDefinition = "dateTime")
+	@Column(columnDefinition = "dateTime")
 	private LocalDateTime dataCadastro;
 	
 	@JsonIgnore
 	@UpdateTimestamp
-	@Column(nullable = false, columnDefinition = "dateTime")
+	@Column(columnDefinition = "dateTime")
 	private LocalDateTime dataAtualizacao;
 }

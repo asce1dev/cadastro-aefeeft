@@ -27,19 +27,17 @@ public class ClientePensionista extends ClienteBase{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private String categoria;
-	
 	@JsonIgnore
 	@Embedded
 	private Endereco endereco;
 	
 	@JsonIgnore
 	@CreationTimestamp
-	@Column(nullable = false, columnDefinition = "dateTime")
+	@Column(columnDefinition = "dateTime")
 	private LocalDateTime dataCadastro;
 	
 	@JsonIgnore
 	@UpdateTimestamp
-	@Column(nullable = false, columnDefinition = "dateTime")
+	@Column(columnDefinition = "dateTime")
 	private LocalDateTime dataAtualizacao;
 }
