@@ -21,16 +21,14 @@ public class ClienteBase {
 	private String senhaGov;
 	
 	private String matriculaSiape;
-	
 	private String telefone;
-	
 	private String contaCorrente;
-	
 	private String dataNascimento;
 	private String nomePai;
 	private String nomeMae;
-	private String estadoCivil;
 	private String tituloEleitor;
 	private String categoria;
+	
+	private EstadoCivil estadoCivil;
 	
 }
