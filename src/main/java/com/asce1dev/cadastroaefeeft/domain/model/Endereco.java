@@ -21,4 +21,5 @@ public class Endereco {
 	@Column(name = "estado_endereco")
 	private String estado;
 	
+	
 }

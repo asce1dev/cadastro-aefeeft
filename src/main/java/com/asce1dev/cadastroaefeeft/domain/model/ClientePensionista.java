@@ -40,4 +40,5 @@ public class ClientePensionista extends ClienteBase{
 	@UpdateTimestamp
 	@Column(columnDefinition = "dateTime")
 	private LocalDateTime dataAtualizacao;
+	
 }

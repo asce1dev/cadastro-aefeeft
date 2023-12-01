@@ -31,4 +31,5 @@ public class ClienteBase {
 	
 	private EstadoCivil estadoCivil;
 	
+	
 }

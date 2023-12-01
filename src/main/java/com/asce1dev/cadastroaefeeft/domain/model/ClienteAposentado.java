@@ -44,4 +44,5 @@ public class ClienteAposentado extends ClienteBase {
 	@UpdateTimestamp
 	@Column(columnDefinition = "dateTime")
 	private LocalDateTime dataAtualizacao;
+	
 }
