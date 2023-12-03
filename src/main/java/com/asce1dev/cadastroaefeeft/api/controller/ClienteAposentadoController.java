@@ -3,6 +3,7 @@ package com.asce1dev.cadastroaefeeft.api.controller;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,8 +11,10 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.asce1dev.cadastroaefeeft.domain.model.ClienteAposentado;
@@ -39,14 +42,8 @@ public class ClienteAposentadoController {
 	 * @return Cliente específico.
 	 */
 	@GetMapping("/{id}")
-	public ResponseEntity<ClienteAposentado> obterClientePorId(@PathVariable Long id) {
-		ClienteAposentado cliente = clienteAposentadoService.obterClientePorId(id);
-		
-		if (cliente != null) {
-			return ResponseEntity.ok(cliente);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+	public ClienteAposentado obterClientePorId(@PathVariable Long id) {
+		return clienteAposentadoService.buscarOuFalhar(id);
 	}
 	/**
 	 * Cadastrar novo cliente ou atualizar cliente existente.
@@ -57,27 +54,20 @@ public class ClienteAposentadoController {
 	 * @return Novo cliente ou atualização cadastral.
 	 */
 	@PostMapping
-	public ResponseEntity<ClienteAposentado> salvarCliente(@RequestBody ClienteAposentado cliente){
-		ClienteAposentado clienteSalvo = clienteAposentadoService.salvarCliente(cliente);
-		return new ResponseEntity<>(clienteSalvo, HttpStatus.CREATED);
+	@ResponseStatus(HttpStatus.CREATED)
+	public ClienteAposentado salvarCliente(@RequestBody ClienteAposentado cliente){
+		return clienteAposentadoService.salvarCliente(cliente);
 	}
 	
-//	TODO
-//	@PutMapping("/{id}")
-//	public ResponseEntity<ClienteAposentado> atualizar(@PathVariable Long id,
-//			@RequestBody ClienteAposentado cliente) {
-//		ClienteAposentado clienteAtual = clienteAposentadoService.obterClientePorId(id);
-//		
-//		if (clienteAtual != null) {
-//			BeanUtils.copyProperties(cliente, clienteAtual, "id", "nome", "cpf", "email", "senhaGov");
-//			
-//			ClienteAposentado clienteSalvo = clienteAposentadoService.salvarCliente(clienteAtual);
-//			return ResponseEntity.ok(clienteSalvo);
-//		}
-//		return ResponseEntity.notFound().build();
-//		
-//	}
-		
+	@PutMapping("/{id}")
+	public ClienteAposentado atualizar(@PathVariable Long id,
+			@RequestBody ClienteAposentado cliente) {
+		ClienteAposentado clienteAtual = clienteAposentadoService.buscarOuFalhar(id);
+
+		BeanUtils.copyProperties(cliente, clienteAtual, "id", "nome", "cpf");
+			
+		return clienteAposentadoService.salvarCliente(clienteAtual);
+	}
 	/**
 	 * Faz a exclusão de um cliente específico por id.
 	 * 
@@ -85,9 +75,9 @@ public class ClienteAposentadoController {
 	 * @throws NoSuchElementException Se nenhum cliente com o ID fornecido for encontrado.
 	 */
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deletarCliente(@PathVariable Long id) {
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deletarCliente(@PathVariable Long id) {
 		clienteAposentadoService.deletarCliente(id);
-		return ResponseEntity.noContent().build();
 	}
 	/**
 	 * Busca uma lista de clientes por nome.
