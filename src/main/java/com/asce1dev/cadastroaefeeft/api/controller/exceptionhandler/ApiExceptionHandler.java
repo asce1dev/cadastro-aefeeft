@@ -21,6 +21,25 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 			+ "Tente novamente e se "
 			+ "o problema persistir, entre em contato com o administrador do sistema.";
 
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<Object> handleNotCaught(Exception ex,
+			WebRequest request) {
+		
+		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+		ProblemType problemType = ProblemType.ERRO_DE_SISTEMA;
+		String detail = MSG_ERRO_GENERICA_USUARIO_FINAL;
+		
+		Problem problem = createProblemBuilder(status, problemType, detail)
+				.userMessage(detail)
+				.build();
+		
+		ex.printStackTrace();
+		
+		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+		
+	}
+	
+	@ExceptionHandler(EntidadeEmUsoException.class)
 	public ResponseEntity<?> handleEntidadeEmUso(EntidadeEmUsoException ex,
 			WebRequest request) {
 		

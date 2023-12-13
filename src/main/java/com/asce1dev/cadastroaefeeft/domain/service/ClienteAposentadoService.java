@@ -16,8 +16,8 @@ import com.asce1dev.cadastroaefeeft.domain.repository.ClienteAposentadoRepositor
 @Service
 public class ClienteAposentadoService {
 
-	private static final String MSG_ENTIDADE_EM_USO = "Cozinha de código %d não pode ser removida, pois está em uso";
-	private static final String MSG_ENTIDADE_NAO_ENCONTRADA = "Não existe um cadastro de aposentado com código %d";
+	private static final String MSG_ENTIDADE_EM_USO = "Cliente de código %d não pode ser removido, pois está em uso";
+	private static final String MSG_ENTIDADE_NAO_ENCONTRADA = "Não existe um cadastro de cliente com código %d";
 	@Autowired
 	private ClienteAposentadoRepository clienteAposentadoRepository;
 	
@@ -38,8 +38,7 @@ public class ClienteAposentadoService {
 			clienteAposentadoRepository.deleteById(id);
 			
 		} catch (EmptyResultDataAccessException e) {
-			throw new ClienteNaoEncontradoException(
-					String.format(MSG_ENTIDADE_NAO_ENCONTRADA,id));
+			throw new ClienteNaoEncontradoException(id);
 			
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
@@ -57,9 +56,7 @@ public class ClienteAposentadoService {
 
 	public ClienteAposentado buscarOuFalhar(Long id) {
 		return clienteAposentadoRepository.findById(id)
-				.orElseThrow(() -> new ClienteNaoEncontradoException(
-						String.format(
-								MSG_ENTIDADE_NAO_ENCONTRADA, id)));
+				.orElseThrow(() -> new ClienteNaoEncontradoException(id));
 	}
 
 }
