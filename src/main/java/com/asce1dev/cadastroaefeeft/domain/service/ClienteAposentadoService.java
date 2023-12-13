@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.asce1dev.cadastroaefeeft.domain.exception.ClienteNaoEncontradoException;
 import com.asce1dev.cadastroaefeeft.domain.exception.EntidadeEmUsoException;
-import com.asce1dev.cadastroaefeeft.domain.exception.EntidadeNaoEncontradaException;
 import com.asce1dev.cadastroaefeeft.domain.model.ClienteAposentado;
 import com.asce1dev.cadastroaefeeft.domain.repository.ClienteAposentadoRepository;
 
