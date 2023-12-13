@@ -7,6 +7,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.asce1dev.cadastroaefeeft.domain.exception.ClienteNaoEncontradoException;
 import com.asce1dev.cadastroaefeeft.domain.exception.EntidadeEmUsoException;
 import com.asce1dev.cadastroaefeeft.domain.exception.EntidadeNaoEncontradaException;
 import com.asce1dev.cadastroaefeeft.domain.model.ClienteAposentado;
@@ -38,7 +39,7 @@ public class ClienteAposentadoService {
 			clienteAposentadoRepository.deleteById(id);
 			
 		} catch (EmptyResultDataAccessException e) {
-			throw new EntidadeNaoEncontradaException(
+			throw new ClienteNaoEncontradoException(
 					String.format(MSG_ENTIDADE_NAO_ENCONTRADA,id));
 			
 		} catch (DataIntegrityViolationException e) {
@@ -57,7 +58,7 @@ public class ClienteAposentadoService {
 
 	public ClienteAposentado buscarOuFalhar(Long id) {
 		return clienteAposentadoRepository.findById(id)
-				.orElseThrow(() -> new EntidadeNaoEncontradaException(
+				.orElseThrow(() -> new ClienteNaoEncontradoException(
 						String.format(
 								MSG_ENTIDADE_NAO_ENCONTRADA, id)));
 	}

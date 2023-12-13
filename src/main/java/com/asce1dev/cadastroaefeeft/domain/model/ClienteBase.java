@@ -28,8 +28,10 @@ public class ClienteBase {
 	private String nomeMae;
 	private String tituloEleitor;
 	private String categoria;
+	private String estadoCivil;
 	
-	private EstadoCivil estadoCivil;
+//	@Enumerated
+//	private EstadoCivil estadoCivil;
 	
 	
 }
