@@ -17,7 +17,6 @@ import com.asce1dev.cadastroaefeeft.domain.repository.ClienteAposentadoRepositor
 public class ClienteAposentadoService {
 
 	private static final String MSG_ENTIDADE_EM_USO = "Cliente de código %d não pode ser removido, pois está em uso";
-	private static final String MSG_ENTIDADE_NAO_ENCONTRADA = "Não existe um cadastro de cliente com código %d";
 	@Autowired
 	private ClienteAposentadoRepository clienteAposentadoRepository;
 	
@@ -47,11 +46,21 @@ public class ClienteAposentadoService {
 	}
 	
 	public List<ClienteAposentado> findClienteByNome(String nome) {
-		return clienteAposentadoRepository.findClienteByNomeContainingIgnoreCase(nome);
+		List<ClienteAposentado> clientes = clienteAposentadoRepository.findClienteByNomeContainingIgnoreCase(nome);
+		
+		if(clientes.isEmpty()) {
+			throw new ClienteNaoEncontradoException("Cliente não encontrado com o nome: " + nome);
+		}
+		return clientes;
 	}
 	
 	public List<ClienteAposentado> findClienteByCpf(String cpf) {
-		return clienteAposentadoRepository.findClienteByCpfContaining(cpf);
+		List<ClienteAposentado> clientes = clienteAposentadoRepository.findClienteByCpfContaining(cpf);
+		
+		if(clientes.isEmpty()) {
+			throw new ClienteNaoEncontradoException("Cliente não encontrado com o CPF: " + cpf);
+		}
+		return clientes;
 	}
 
 	public ClienteAposentado buscarOuFalhar(Long id) {

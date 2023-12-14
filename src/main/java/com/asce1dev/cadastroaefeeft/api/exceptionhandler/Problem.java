@@ -1,4 +1,4 @@
-package com.asce1dev.cadastroaefeeft.api.controller.exceptionhandler;
+package com.asce1dev.cadastroaefeeft.api.exceptionhandler;
 
 import java.time.LocalDateTime;
 

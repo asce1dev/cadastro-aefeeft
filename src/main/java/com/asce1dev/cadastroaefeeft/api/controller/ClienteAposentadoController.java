@@ -6,7 +6,6 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -64,7 +63,7 @@ public class ClienteAposentadoController {
 			@RequestBody ClienteAposentado cliente) {
 		ClienteAposentado clienteAtual = clienteAposentadoService.buscarOuFalhar(id);
 
-		BeanUtils.copyProperties(cliente, clienteAtual, "id", "nome", "cpf");
+		BeanUtils.copyProperties(cliente, clienteAtual, "id");
 			
 		return clienteAposentadoService.salvarCliente(clienteAtual);
 	}
@@ -86,14 +85,8 @@ public class ClienteAposentadoController {
 	 * @return Lista de Clientes.
 	 */
 	@GetMapping("/por-nome/{nome}")
-	public ResponseEntity<List<ClienteAposentado>> clientePorNome(@PathVariable String nome) {
-		List<ClienteAposentado> cliente = clienteAposentadoService.findClienteByNome(nome);
-		
-		if (cliente.isEmpty()) {
-			return ResponseEntity.notFound().build();
-		} else {
-			return ResponseEntity.ok(cliente);
-		}
+	public List<ClienteAposentado> clientePorNome(@PathVariable String nome) {
+		return clienteAposentadoService.findClienteByNome(nome);
 	}
 	/**
 	 * Busca uma lista de clientes por CPF.
@@ -102,13 +95,7 @@ public class ClienteAposentadoController {
 	 * @return Lista de Clientes.
 	 */
 	@GetMapping("/por-cpf/{cpf}")
-	public ResponseEntity<List<ClienteAposentado>>clientePorCpf(@PathVariable String cpf) {
-		List<ClienteAposentado> cliente = clienteAposentadoService.findClienteByCpf(cpf);
-		
-		if (cliente.isEmpty()) {
-			return ResponseEntity.notFound().build();
-		} else {
-			return ResponseEntity.ok(cliente);
-		}
+	public List<ClienteAposentado>clientePorCpf(@PathVariable String cpf) {
+		return clienteAposentadoService.findClienteByCpf(cpf);
 	}
 }
