@@ -1,23 +1,26 @@
 package com.asce1dev.cadastroaefeeft.domain.model;
 
-import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @MappedSuperclass
 @Data
 public class ClienteBase {
 	
-	@Column(nullable = false)
+	@NotBlank
 	private String nome;
 	
-	@Column(nullable = false)
+	@NotBlank
 	private String cpf;
 	
-//	@Column(nullable = false)
+//	@Email
+	@NotBlank
 	private String email;
 	
-//	@Column(nullable = false)
+	@NotBlank
 	private String senhaGov;
 	
 	private String matriculaSiape;
@@ -28,10 +31,9 @@ public class ClienteBase {
 	private String nomeMae;
 	private String tituloEleitor;
 	private String categoria;
-	private String estadoCivil;
 	
-//	@Enumerated
-//	private EstadoCivil estadoCivil;
+	@Enumerated(EnumType.STRING)
+	private EstadoCivil estadoCivil;
 	
 	
 }
