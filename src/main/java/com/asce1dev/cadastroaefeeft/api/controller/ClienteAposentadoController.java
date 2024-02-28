@@ -46,8 +46,8 @@ public class ClienteAposentadoController {
 	}
 
 	@GetMapping("/{clienteAposentadoId}")
-	public ClienteAposentadoModel obterClientePorId(@PathVariable Long ClienteAposentadoId) {
-		ClienteAposentado clienteAposentado = clienteAposentadoService.buscarOuFalhar(ClienteAposentadoId);
+	public ClienteAposentadoModel obterClientePorId(@PathVariable Long clienteAposentadoId) {
+		ClienteAposentado clienteAposentado = clienteAposentadoService.buscarOuFalhar(clienteAposentadoId);
 		
 		return clienteAposentadoModelAssembler.toModel(clienteAposentado);
 	}
