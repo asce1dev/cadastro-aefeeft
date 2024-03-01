@@ -1,11 +1,5 @@
 package com.asce1dev.cadastroaefeeft.domain.model;
 
-import java.time.LocalDateTime;
-
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,14 +25,5 @@ public class ClienteAposentado extends ClienteBase {
 	
 	@Embedded
 	private Endereco endereco;
-	
-	
-	@CreationTimestamp
-	@Column(columnDefinition = "dateTime")
-	private LocalDateTime dataCadastro;
-	
-	@UpdateTimestamp
-	@Column(columnDefinition = "dateTime")
-	private LocalDateTime dataAtualizacao;
 	
 }

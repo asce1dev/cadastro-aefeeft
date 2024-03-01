@@ -4,17 +4,28 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.asce1dev.cadastroaefeeft.api.assembler.ClientePensionistaInputDisassembler;
+import com.asce1dev.cadastroaefeeft.api.assembler.ClientePensionistaModelAssembler;
+import com.asce1dev.cadastroaefeeft.api.assembler.ClientePensionistaResumoModelAssembler;
+import com.asce1dev.cadastroaefeeft.api.model.ClientePensionistaModel;
+import com.asce1dev.cadastroaefeeft.api.model.ClientePensionistaResumoModel;
+import com.asce1dev.cadastroaefeeft.api.model.input.ClientePensionistaInput;
+import com.asce1dev.cadastroaefeeft.domain.exception.ClienteNaoEncontradoException;
+import com.asce1dev.cadastroaefeeft.domain.exception.NegocioException;
 import com.asce1dev.cadastroaefeeft.domain.model.ClientePensionista;
 import com.asce1dev.cadastroaefeeft.domain.service.ClientePensionistaService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/pensionistas")
@@ -22,102 +33,73 @@ public class ClientePensionistaController {
 
 	@Autowired
 	private ClientePensionistaService clientePensionistaService;
-	/**
-	 * Lista todos os Pensionistas Cadastrados.
-	 * 
-	 * @return Lista de Pensionistas.
-	 */
+	
+	@Autowired
+	private ClientePensionistaModelAssembler clientePensionistaModelAssembler;
+	
+	@Autowired
+	private ClientePensionistaInputDisassembler clientePensionistaInputDisassembler;
+
+	@Autowired
+	private ClientePensionistaResumoModelAssembler clientePensionistaResumoModelAssembler;
+	
 	@GetMapping
-	public List<ClientePensionista> listarClientes() {
-		return clientePensionistaService.listarClientes();
-	}
-	/**
-	 * Busca um cliente específico por ID (identificador do cliente).
-	 * 
-	 * @param id ID do cliente a ser exibido.
-	 * @return Cliente específico.
-	 */
-	@GetMapping("/{id}")
-	public ResponseEntity<ClientePensionista> obterClientePorId(@PathVariable Long id) {
-		ClientePensionista cliente = clientePensionistaService.obterClientePorId(id);
+	public List<ClientePensionistaResumoModel> listarClientes() {
+		List<ClientePensionista> todosClientes = clientePensionistaService.listarClientes();
 		
-		if (cliente != null) {
-			return ResponseEntity.ok(cliente);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+		return clientePensionistaResumoModelAssembler.toCollectionModel(todosClientes);
 	}
-	/**
-	 * Cadastrar novo cliente ou atualizar cliente existente.
-	 * 
-	 * Os requisitos mínimos são que os campos "nome, cpf, email" sejam preenchidos.
-	 * 
-	 * @param cliente 
-	 * @return Novo cliente ou atualização cadastral.
-	 */
+
+	@GetMapping("/{ClientePensionistaId}")
+	public ClientePensionistaModel obterClientePorId(@PathVariable Long ClientePensionistaId) {
+		ClientePensionista cliente = clientePensionistaService.buscarOuFalhar(ClientePensionistaId);
+		
+		return clientePensionistaModelAssembler.toModel(cliente);
+	}
+
 	@PostMapping
-	public ResponseEntity<ClientePensionista> salvarCliente(@RequestBody ClientePensionista cliente){
-		ClientePensionista clienteSalvo = clientePensionistaService.salvarCliente(cliente);
-		return new ResponseEntity<>(clienteSalvo, HttpStatus.CREATED);
+	@ResponseStatus(HttpStatus.CREATED)
+	public ClientePensionistaModel salvarCliente(@RequestBody @Valid ClientePensionistaInput clientePensionistaInput){
+		try {
+			ClientePensionista clienteAtual = clientePensionistaInputDisassembler.toDomainObject(clientePensionistaInput);
+			
+			return clientePensionistaModelAssembler.toModel(clientePensionistaService.salvarCliente(clienteAtual));
+		} catch(ClienteNaoEncontradoException e) {
+			throw new NegocioException(e.getMessage());
+		}
 	}
 	
-//	TODO
-//	@PutMapping("/{id}")
-//	public ResponseEntity<ClientePensionista> atualizar(@PathVariable Long id,
-//			@RequestBody ClientePensionista cliente) {
-//		ClientePensionista clienteAtual = clientePensionistaService.obterClientePorId(id);
-//		
-//		if (clienteAtual != null) {
-//			BeanUtils.copyProperties(cliente, clienteAtual, "id", "nome", "cpf", "email", "senhaGov");
-//			
-//			ClientePensionista clienteSalvo = clientePensionistaService.salvarCliente(clienteAtual);
-//			return ResponseEntity.ok(clienteSalvo);
-//		}
-//		return ResponseEntity.notFound().build();
-//		
-//	}
+	@PutMapping("/{clientePensionistaId}")
+	public ClientePensionistaModel atualizar(@PathVariable Long clientePensionistaId,
+			@RequestBody @Valid ClientePensionistaInput clientePensionistaInput) {
+		try {
+			ClientePensionista clienteAtual = clientePensionistaService.buscarOuFalhar(clientePensionistaId);
+			
+			clientePensionistaInputDisassembler.copyToDomainObject(clientePensionistaInput, clienteAtual);
+			
+			return clientePensionistaModelAssembler.toModel(clientePensionistaService.salvarCliente(clienteAtual));
+		} catch(ClienteNaoEncontradoException e) {
+			throw new NegocioException(e.getMessage());
+		}
+	}
 	
-	/**
-	 * Faz a exclusão de um cliente específico por id.
-	 * 
-	 * @param id ID do cliente a ser excluído.
-	 * @throws NoSuchElementException Se nenhum cliente com o ID fornecido for encontrado.
-	 */
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deletarCliente(@PathVariable Long id) {
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deletarCliente(@PathVariable Long id) {
 		clientePensionistaService.deletarCliente(id);
-		return ResponseEntity.noContent().build();
 	}
-	/**
-	 * Busca uma lista de clientes por nome.
-	 * 
-	 * @param nome
-	 * @return Lista de Clientes.
-	 */
+
 	@GetMapping("/por-nome/{nome}")
-	public ResponseEntity<List<ClientePensionista>> clientePorNome(@PathVariable String nome) {
-		List<ClientePensionista> cliente = clientePensionistaService.findClienteByNome(nome);
+	public List<ClientePensionistaModel> clientePorNome(@PathVariable String nome) {
+		List<ClientePensionista> clientePensionista = clientePensionistaService.findClienteByNome(nome);
 		
-		if (cliente.isEmpty()) {
-			return ResponseEntity.notFound().build();
-		} else {
-			return ResponseEntity.ok(cliente);
-		}
+		return clientePensionistaModelAssembler.toCollectionModel(clientePensionista);
 	}
-	/**
-	 * Busca uma lista de clientes por CPF.
-	 * 
-	 * @param cpf
-	 * @return Lista de Clientes.
-	 */
+
 	@GetMapping("/por-cpf/{cpf}")
-	public ResponseEntity<List<ClientePensionista>> clientePorCPF(@PathVariable String cpf) {
-		List<ClientePensionista> cliente = clientePensionistaService.findClienteByCpf(cpf);
+	public List<ClientePensionistaModel>clientePorCpf(@PathVariable String cpf) {
+		List<ClientePensionista> clientePensionista = clientePensionistaService.findClienteByCpf(cpf);
 		
-		if (cliente.isEmpty()) {
-			return ResponseEntity.notFound().build();
-		} else {
-			return ResponseEntity.ok(cliente);
-		}
+		return clientePensionistaModelAssembler.toCollectionModel(clientePensionista);
 	}
 }

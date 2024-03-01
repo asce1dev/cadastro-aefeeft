@@ -1,8 +1,6 @@
 package com.asce1dev.cadastroaefeeft.api.model;
 
-import java.time.LocalDateTime;
-
-import com.asce1dev.cadastroaefeeft.domain.model.Endereco;
+import java.time.OffsetDateTime;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,13 +21,14 @@ public class ClienteAposentadoModel {
 	private String nomePai;
 	private String nomeMae;
 	private String tituloEleitor;
-	private String categoria;
 	private String estadoCivil;
+	private String categoria;
 	private String classe;
 	private String padrao;
 	private String identificacaoUnica;
-	private Endereco endereco;
-	private LocalDateTime dataCadastro;
-	private LocalDateTime dataAtualizacao;
+	private EnderecoModel endereco;
+	private OffsetDateTime dataCadastro;
+	private OffsetDateTime dataAtualizacao;
+
 	
 }

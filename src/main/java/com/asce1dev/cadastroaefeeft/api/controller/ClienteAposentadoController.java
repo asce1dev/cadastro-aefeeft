@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.asce1dev.cadastroaefeeft.api.assembler.ClienteAposentadoInputDisassembler;
 import com.asce1dev.cadastroaefeeft.api.assembler.ClienteAposentadoModelAssembler;
+import com.asce1dev.cadastroaefeeft.api.assembler.ClienteAposentadoResumoModelAssembler;
 import com.asce1dev.cadastroaefeeft.api.model.ClienteAposentadoModel;
+import com.asce1dev.cadastroaefeeft.api.model.ClienteAposentadoResumoModel;
 import com.asce1dev.cadastroaefeeft.api.model.input.ClienteAposentadoInput;
 import com.asce1dev.cadastroaefeeft.domain.exception.ClienteNaoEncontradoException;
 import com.asce1dev.cadastroaefeeft.domain.exception.NegocioException;
@@ -38,11 +40,14 @@ public class ClienteAposentadoController {
 	@Autowired
 	private ClienteAposentadoInputDisassembler clienteAposentadoInputDisassembler;
 	
+	@Autowired
+	private ClienteAposentadoResumoModelAssembler clienteAposentadoResumoModelAssembler;
+	
 	@GetMapping
-	public List<ClienteAposentadoModel> listarClientes() {
+	public List<ClienteAposentadoResumoModel> listarClientes() {
 		List<ClienteAposentado> todosClientes = clienteAposentadoService.listarClientes();
 		
-		return clienteAposentadoModelAssembler.toCollectionModel(todosClientes);
+		return clienteAposentadoResumoModelAssembler.toCollectionModel(todosClientes);
 	}
 
 	@GetMapping("/{clienteAposentadoId}")
@@ -54,9 +59,9 @@ public class ClienteAposentadoController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ClienteAposentadoModel salvarCliente(@RequestBody @Valid ClienteAposentadoInput clienteInput){
+	public ClienteAposentadoModel salvarCliente(@RequestBody @Valid ClienteAposentadoInput clienteAposentadoInput){
 		try {
-			ClienteAposentado clienteAposentado = clienteAposentadoInputDisassembler.toDomainObject(clienteInput);
+			ClienteAposentado clienteAposentado = clienteAposentadoInputDisassembler.toDomainObject(clienteAposentadoInput);
 
 			return clienteAposentadoModelAssembler.toModel(clienteAposentadoService.salvarCliente(clienteAposentado));
 		} catch (ClienteNaoEncontradoException e) {
@@ -86,13 +91,17 @@ public class ClienteAposentadoController {
 	}
 
 	@GetMapping("/por-nome/{nome}")
-	public List<ClienteAposentado> clientePorNome(@PathVariable String nome) {
-		return clienteAposentadoService.findClienteByNome(nome);
+	public List<ClienteAposentadoModel> clientePorNome(@PathVariable String nome) {
+		List<ClienteAposentado> clienteAposentado = clienteAposentadoService.findClienteByNome(nome);
+		
+		return clienteAposentadoModelAssembler.toCollectionModel(clienteAposentado);
 	}
 
 	@GetMapping("/por-cpf/{cpf}")
-	public List<ClienteAposentado>clientePorCpf(@PathVariable String cpf) {
-		return clienteAposentadoService.findClienteByCpf(cpf);
+	public List<ClienteAposentadoModel>clientePorCpf(@PathVariable String cpf) {
+		List<ClienteAposentado> clienteAposentado = clienteAposentadoService.findClienteByCpf(cpf);
+		
+		return clienteAposentadoModelAssembler.toCollectionModel(clienteAposentado);
 	}
 	
 }

@@ -24,10 +24,6 @@ public class ClienteAposentadoService {
 		return clienteAposentadoRepository.findAll();
 	}
 	
-	public ClienteAposentado obterClientePorId(Long id) {
-		return clienteAposentadoRepository.findById(id).orElse(null);
-	}
-	
 	public ClienteAposentado salvarCliente(ClienteAposentado cliente) {
 		return clienteAposentadoRepository.save(cliente);
 	}
@@ -63,9 +59,9 @@ public class ClienteAposentadoService {
 		return clientes;
 	}
 
-	public ClienteAposentado buscarOuFalhar(Long id) {
-		return clienteAposentadoRepository.findById(id)
-				.orElseThrow(() -> new ClienteNaoEncontradoException(id));
+	public ClienteAposentado buscarOuFalhar(Long clienteAposentadoId) {
+		return clienteAposentadoRepository.findById(clienteAposentadoId)
+				.orElseThrow(() -> new ClienteNaoEncontradoException(clienteAposentadoId));
 	}
 
 }
