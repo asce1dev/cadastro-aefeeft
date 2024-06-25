@@ -9,28 +9,28 @@ import org.springframework.stereotype.Service;
 
 import com.asce1dev.cadastroaefeeft.domain.exception.ClienteNaoEncontradoException;
 import com.asce1dev.cadastroaefeeft.domain.exception.EntidadeEmUsoException;
-import com.asce1dev.cadastroaefeeft.domain.model.ClienteAposentado;
-import com.asce1dev.cadastroaefeeft.domain.repository.ClienteAposentadoRepository;
+import com.asce1dev.cadastroaefeeft.domain.model.Cliente;
+import com.asce1dev.cadastroaefeeft.domain.repository.ClienteRepository;
 
 
 @Service
-public class ClienteAposentadoService {
+public class ClienteService {
 
 	private static final String MSG_ENTIDADE_EM_USO = "Cliente de código %d não pode ser removido, pois está em uso";
 	@Autowired
-	private ClienteAposentadoRepository clienteAposentadoRepository;
+	private ClienteRepository clienteRepository;
 	
-	public List<ClienteAposentado> listarClientes(){
-		return clienteAposentadoRepository.findAll();
+	public List<Cliente> listarClientes(){
+		return clienteRepository.findAll();
 	}
 	
-	public ClienteAposentado salvarCliente(ClienteAposentado cliente) {
-		return clienteAposentadoRepository.save(cliente);
+	public Cliente salvarCliente(Cliente cliente) {
+		return clienteRepository.save(cliente);
 	}
 	
 	public void deletarCliente(Long id) {
 		try {
-			clienteAposentadoRepository.deleteById(id);
+			clienteRepository.deleteById(id);
 			
 		} catch (EmptyResultDataAccessException e) {
 			throw new ClienteNaoEncontradoException(id);
@@ -41,8 +41,8 @@ public class ClienteAposentadoService {
 		}
 	}
 	
-	public List<ClienteAposentado> findClienteByNome(String nome) {
-		List<ClienteAposentado> clientes = clienteAposentadoRepository.findClienteByNomeContainingIgnoreCase(nome);
+	public List<Cliente> findClienteByNome(String nome) {
+		List<Cliente> clientes = clienteRepository.findClienteByNomeContainingIgnoreCase(nome);
 		
 		if(clientes.isEmpty()) {
 			throw new ClienteNaoEncontradoException("Cliente não encontrado com o nome: " + nome);
@@ -50,8 +50,8 @@ public class ClienteAposentadoService {
 		return clientes;
 	}
 	
-	public List<ClienteAposentado> findClienteByCpf(String cpf) {
-		List<ClienteAposentado> clientes = clienteAposentadoRepository.findClienteByCpfContaining(cpf);
+	public List<Cliente> findClienteByCpf(String cpf) {
+		List<Cliente> clientes = clienteRepository.findClienteByCpfContaining(cpf);
 		
 		if(clientes.isEmpty()) {
 			throw new ClienteNaoEncontradoException("Cliente não encontrado com o CPF: " + cpf);
@@ -59,8 +59,8 @@ public class ClienteAposentadoService {
 		return clientes;
 	}
 
-	public ClienteAposentado buscarOuFalhar(Long clienteAposentadoId) {
-		return clienteAposentadoRepository.findById(clienteAposentadoId)
+	public Cliente buscarOuFalhar(Long clienteAposentadoId) {
+		return clienteRepository.findById(clienteAposentadoId)
 				.orElseThrow(() -> new ClienteNaoEncontradoException(clienteAposentadoId));
 	}
 

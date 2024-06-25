@@ -6,16 +6,28 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-@MappedSuperclass
-@Data
-public class ClienteBase {
+@Getter
+@Setter
+@Entity
+public class Cliente {
+	
+	@EqualsAndHashCode.Include
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	
 	@NotBlank
 	private String nome;
@@ -23,21 +35,25 @@ public class ClienteBase {
 	@NotBlank
 	private String cpf;
 	
+	@NotBlank
+	private String senhaGov;
+
 	@Email
 	@NotBlank
 	private String email;
 	
-	@NotBlank
-	private String senhaGov;
-	
-	private String matriculaSiape;
 	private String telefone;
-	private String contaCorrente;
+	private String tituloEleitor;
 	private String dataNascimento;
+	private String matriculaSiape;
+	private String contaCorrente;
 	private String nomePai;
 	private String nomeMae;
-	private String tituloEleitor;
 	private String categoria;
+	private String classe;
+	private String padrao;
+	private String identificacaoUnica;
+	private String tipo;
 	
 	@Enumerated(EnumType.STRING)
 	private EstadoCivil estadoCivil;
@@ -49,5 +65,8 @@ public class ClienteBase {
 	@UpdateTimestamp
 	@Column(columnDefinition = "dateTime")
 	private OffsetDateTime dataAtualizacao;
+	
+	@Embedded
+	private Endereco endereco;
 	
 }

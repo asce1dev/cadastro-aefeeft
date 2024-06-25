@@ -1,17 +1,17 @@
 package com.asce1dev.cadastroaefeeft.api.model;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ClienteAposentadoResumoModel {
+public class ClienteResumoModel {
 
 	private Long id;
 	private String nome;
 	private String cpf;
-	private LocalDateTime dataCadastro;
+	private OffsetDateTime dataCadastro;
 	
 }

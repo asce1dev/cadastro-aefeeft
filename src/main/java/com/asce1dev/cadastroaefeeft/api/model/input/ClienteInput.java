@@ -1,19 +1,29 @@
-package com.asce1dev.cadastroaefeeft.api.model;
+package com.asce1dev.cadastroaefeeft.api.model.input;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ClienteAposentadoModel {
+public class ClienteInput {
 
-	private Long id;
+	@NotBlank
 	private String nome;
+	
+	@NotBlank
 	private String cpf;
+	
+	@NotBlank
 	private String email;
+	
+	@NotBlank
 	private String senhaGov;
+	
 	private String matriculaSiape;
 	private String telefone;
 	private String contaCorrente;
@@ -21,14 +31,16 @@ public class ClienteAposentadoModel {
 	private String nomePai;
 	private String nomeMae;
 	private String tituloEleitor;
-	private String estadoCivil;
 	private String categoria;
+	private String estadoCivil;
 	private String classe;
 	private String padrao;
 	private String identificacaoUnica;
-	private EnderecoModel endereco;
-	private OffsetDateTime dataCadastro;
-	private OffsetDateTime dataAtualizacao;
-
 	
+	@Valid
+	@NotNull
+	private EnderecoInput endereco;
+	
+	private LocalDateTime dataCadastro;
+	private LocalDateTime dataAtualizacao;
 }
