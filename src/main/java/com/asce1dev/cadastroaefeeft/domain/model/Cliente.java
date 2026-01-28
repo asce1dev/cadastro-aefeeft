@@ -1,5 +1,6 @@
 package com.asce1dev.cadastroaefeeft.domain.model;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -21,6 +22,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Cliente {
 	
@@ -28,24 +30,21 @@ public class Cliente {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@NotBlank
+
+	@Column(nullable = false)
 	private String nome;
-	
-	@NotBlank
-	@Column(unique = true)
+
+
+	@Column(unique = true, nullable = false)
 	private String cpf;
-	
-	@NotBlank
+
 	private String senhaGov;
 
-	@Email
-	@NotBlank
 	private String email;
-	
+
 	private String telefone;
 	private String tituloEleitor;
-	private String dataNascimento;
+	private LocalDate dataNascimento;
 	private String matriculaSiape;
 	private String contaCorrente;
 	private String nomePai;
@@ -54,13 +53,13 @@ public class Cliente {
 	private String padrao;
 	private String identificacaoUnica;
 
-	@NotBlank
+	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Categoria categoria;
 
 	@Enumerated(EnumType.STRING)
 	private EstadoCivil estadoCivil;
-	
+
 	@CreationTimestamp
 	@Column(columnDefinition = "dateTime")
 	private OffsetDateTime dataCadastro;

@@ -1,8 +1,10 @@
 package com.asce1dev.cadastroaefeeft.api.model.input;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.asce1dev.cadastroaefeeft.domain.model.Categoria;
+import com.asce1dev.cadastroaefeeft.domain.model.EstadoCivil;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -21,29 +23,29 @@ public class ClienteInput {
 	private String cpf;
 
 	@Email
-	@NotBlank
 	private String email;
-	
-	@NotBlank
+
 	private String senhaGov;
 	
 	private String matriculaSiape;
 	private String telefone;
 	private String contaCorrente;
-	private String dataNascimento;
+	private LocalDate dataNascimento;
 	private String nomePai;
 	private String nomeMae;
 	private String tituloEleitor;
-	private String categoria;
-	private String estadoCivil;
 	private String classe;
 	private String padrao;
 	private String identificacaoUnica;
-	
+
+	@NotNull
+	private EstadoCivil estadoCivil;
+
+	@NotNull
+	private Categoria categoria;
+
 	@Valid
 	@NotNull
 	private EnderecoInput endereco;
 	
-	private LocalDateTime dataCadastro;
-	private LocalDateTime dataAtualizacao;
 }

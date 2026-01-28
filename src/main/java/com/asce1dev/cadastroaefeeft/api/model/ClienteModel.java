@@ -1,5 +1,6 @@
 package com.asce1dev.cadastroaefeeft.api.model;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
 import com.asce1dev.cadastroaefeeft.domain.model.Categoria;
@@ -15,11 +16,10 @@ public class ClienteModel {
 	private String nome;
 	private String cpf;
 	private String email;
-	private String senhaGov;
 	private String matriculaSiape;
 	private String telefone;
 	private String contaCorrente;
-	private String dataNascimento;
+	private LocalDate dataNascimento;
 	private String nomePai;
 	private String nomeMae;
 	private String tituloEleitor;

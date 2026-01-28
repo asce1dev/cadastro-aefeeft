@@ -17,6 +17,7 @@ import com.asce1dev.cadastroaefeeft.domain.repository.ClienteRepository;
 public class ClienteService {
 
 	private static final String MSG_ENTIDADE_EM_USO = "Cliente de código %d não pode ser removido, pois está em uso";
+
 	@Autowired
 	private ClienteRepository clienteRepository;
 	

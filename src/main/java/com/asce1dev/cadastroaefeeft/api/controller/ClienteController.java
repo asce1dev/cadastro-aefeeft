@@ -93,17 +93,17 @@ public class ClienteController {
 	}
 
 	@GetMapping("/por-nome/{nome}")
-	public List<ClienteModel> clientePorNome(@PathVariable String nome) {
-		List<Cliente> cliente = clienteService.findClienteByNome(nome);
+	public List<ClienteResumoModel> clientePorNome(@PathVariable String nome) {
+		List<Cliente> clientes = clienteService.findClienteByNome(nome);
 		
-		return clienteModelAssembler.toCollectionModel(cliente);
+		return clienteResumoModelAssembler.toCollectionModel(clientes);
 	}
 
 	@GetMapping("/por-cpf/{cpf}")
-	public List<ClienteModel>clientePorCpf(@PathVariable String cpf) {
-		List<Cliente> cliente = clienteService.findClienteByCpf(cpf);
+	public List<ClienteResumoModel>clientePorCpf(@PathVariable String cpf) {
+		List<Cliente> clientes = clienteService.findClienteByCpf(cpf);
 		
-		return clienteModelAssembler.toCollectionModel(cliente);
+		return clienteResumoModelAssembler.toCollectionModel(clientes);
 	}
 	
 }
