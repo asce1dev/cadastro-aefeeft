@@ -16,8 +16,8 @@ public class ClienteResumoModelAssembler {
 	@Autowired
 	private ModelMapper modelMapper;
 	
-	public ClienteResumoModel toModel(Cliente clienteAposentado) {
-		return modelMapper.map(clienteAposentado, ClienteResumoModel.class);
+	public ClienteResumoModel toModel(Cliente cliente) {
+		return modelMapper.map(cliente, ClienteResumoModel.class);
 	}
 	
 	public List<ClienteResumoModel> toCollectionModel(List<Cliente> clientes) {

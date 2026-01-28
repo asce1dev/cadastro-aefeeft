@@ -33,6 +33,7 @@ public class Cliente {
 	private String nome;
 	
 	@NotBlank
+	@Column(unique = true)
 	private String cpf;
 	
 	@NotBlank
@@ -49,12 +50,14 @@ public class Cliente {
 	private String contaCorrente;
 	private String nomePai;
 	private String nomeMae;
-	private String categoria;
 	private String classe;
 	private String padrao;
 	private String identificacaoUnica;
-	private String tipo;
-	
+
+	@NotBlank
+	@Enumerated(EnumType.STRING)
+	private Categoria categoria;
+
 	@Enumerated(EnumType.STRING)
 	private EstadoCivil estadoCivil;
 	

@@ -22,7 +22,7 @@ public class ClienteModelAssembler {
 	
 	public List<ClienteModel> toCollectionModel(List<Cliente> clientes) {
 		return clientes.stream()
-				.map(clienteAposentado -> toModel(clienteAposentado))
+				.map(cliente -> toModel(cliente))
 				.collect(Collectors.toList());
 	}
 }
