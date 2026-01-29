@@ -62,28 +62,19 @@ public class ClienteController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ClienteModel salvarCliente(@RequestBody @Valid ClienteInput clienteInput){
-		try {
 			Cliente cliente = clienteInputDisassembler.toDomainObject(clienteInput);
 
 			return clienteModelAssembler.toModel(clienteService.salvarCliente(cliente));
-		} catch (ClienteNaoEncontradoException e) {
-			throw new NegocioException(e.getMessage());
-		}
-		
 	}
 	
 	@PutMapping("/{clienteId}")
 	public ClienteModel atualizar(@PathVariable Long clienteId,
 			@RequestBody @Valid ClienteInput clienteInput) {
-		try {
 			Cliente clienteAtual = clienteService.buscarOuFalhar(clienteId);
 			
 			clienteInputDisassembler.copyToDomainObject(clienteInput, clienteAtual);	
 			
 			return clienteModelAssembler.toModel(clienteService.salvarCliente(clienteAtual));
-		} catch (ClienteNaoEncontradoException e) {
-			throw new NegocioException(e.getMessage());
-		}
 	}
 
 	@DeleteMapping("/{id}")

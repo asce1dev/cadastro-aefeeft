@@ -2,6 +2,7 @@ package com.asce1dev.cadastroaefeeft.domain.service;
 
 import java.util.List;
 
+import com.asce1dev.cadastroaefeeft.domain.exception.CpfDuplicadoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -26,7 +27,11 @@ public class ClienteService {
 	}
 	
 	public Cliente salvarCliente(Cliente cliente) {
-		return clienteRepository.save(cliente);
+		try {
+			return clienteRepository.save(cliente);
+		} catch (DataIntegrityViolationException e) {
+			throw new CpfDuplicadoException();
+		}
 	}
 	
 	public void deletarCliente(Long id) {
@@ -43,26 +48,16 @@ public class ClienteService {
 	}
 	
 	public List<Cliente> findClienteByNome(String nome) {
-		List<Cliente> clientes = clienteRepository.findClienteByNomeContainingIgnoreCase(nome);
-		
-		if(clientes.isEmpty()) {
-			throw new ClienteNaoEncontradoException("Cliente não encontrado com o nome: " + nome);
-		}
-		return clientes;
+		return clienteRepository.findClienteByNomeContainingIgnoreCase(nome);
 	}
 	
 	public List<Cliente> findClienteByCpf(String cpf) {
-		List<Cliente> clientes = clienteRepository.findClienteByCpfContaining(cpf);
-		
-		if(clientes.isEmpty()) {
-			throw new ClienteNaoEncontradoException("Cliente não encontrado com o CPF: " + cpf);
-		}
-		return clientes;
+		return clienteRepository.findClienteByCpfContaining(cpf);
 	}
 
-	public Cliente buscarOuFalhar(Long clienteAposentadoId) {
-		return clienteRepository.findById(clienteAposentadoId)
-				.orElseThrow(() -> new ClienteNaoEncontradoException(clienteAposentadoId));
+	public Cliente buscarOuFalhar(Long clienteId) {
+		return clienteRepository.findById(clienteId)
+				.orElseThrow(() -> new ClienteNaoEncontradoException(clienteId));
 	}
 
 }
