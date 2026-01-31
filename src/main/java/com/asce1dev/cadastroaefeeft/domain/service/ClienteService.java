@@ -3,6 +3,7 @@ package com.asce1dev.cadastroaefeeft.domain.service;
 import java.util.List;
 
 import com.asce1dev.cadastroaefeeft.domain.exception.CpfDuplicadoException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -25,15 +26,17 @@ public class ClienteService {
 	public List<Cliente> listarClientes(){
 		return clienteRepository.findAll();
 	}
-	
+
+	@Transactional
 	public Cliente salvarCliente(Cliente cliente) {
 		try {
-			return clienteRepository.save(cliente);
+			return clienteRepository.saveAndFlush(cliente);
 		} catch (DataIntegrityViolationException e) {
 			throw new CpfDuplicadoException();
 		}
 	}
-	
+
+	@Transactional
 	public void deletarCliente(Long id) {
 		try {
 			clienteRepository.deleteById(id);
