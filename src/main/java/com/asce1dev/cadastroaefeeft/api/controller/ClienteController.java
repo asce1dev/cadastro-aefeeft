@@ -1,55 +1,40 @@
 package com.asce1dev.cadastroaefeeft.api.controller;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.asce1dev.cadastroaefeeft.api.assembler.ClienteInputDisassembler;
 import com.asce1dev.cadastroaefeeft.api.assembler.ClienteModelAssembler;
 import com.asce1dev.cadastroaefeeft.api.assembler.ClienteResumoModelAssembler;
 import com.asce1dev.cadastroaefeeft.api.model.ClienteModel;
 import com.asce1dev.cadastroaefeeft.api.model.ClienteResumoModel;
 import com.asce1dev.cadastroaefeeft.api.model.input.ClienteInput;
-import com.asce1dev.cadastroaefeeft.domain.exception.ClienteNaoEncontradoException;
-import com.asce1dev.cadastroaefeeft.domain.exception.NegocioException;
 import com.asce1dev.cadastroaefeeft.domain.model.Cliente;
 import com.asce1dev.cadastroaefeeft.domain.service.ClienteService;
-
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/clientes")
 public class ClienteController {
 
-	@Autowired
-	private ClienteService clienteService;
+	private final ClienteService clienteService;
+	private final ClienteModelAssembler clienteModelAssembler;
+	private final ClienteInputDisassembler clienteInputDisassembler;
+	private final ClienteResumoModelAssembler clienteResumoModelAssembler;
 
-	@Autowired
-	private ClienteModelAssembler clienteModelAssembler;
-	
-	@Autowired
-	private ClienteInputDisassembler clienteInputDisassembler;
-	
-	@Autowired
-	private ClienteResumoModelAssembler clienteResumoModelAssembler;
-	
 	@GetMapping
-	public List<ClienteResumoModel> listarClientes() {
-		List<Cliente> todosClientes = clienteService.listarClientes();
-		
-		return clienteResumoModelAssembler.toCollectionModel(todosClientes);
+	public Page<ClienteResumoModel> listarClientes(
+			@RequestParam(required = false) String nome,
+			@RequestParam(required = false) String cpf,
+			@PageableDefault(sort = "nome", direction = Sort.Direction.ASC) Pageable pageable) {
+
+		Page<Cliente> page = clienteService.listarClientes(nome, cpf, pageable);
+		return page.map(clienteResumoModelAssembler::toModel);
 	}
 
 	@GetMapping("/{clienteId}")
@@ -77,24 +62,11 @@ public class ClienteController {
 			return clienteModelAssembler.toModel(clienteService.salvarCliente(clienteAtual));
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{clienteId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deletarCliente(@PathVariable Long id) {
-		clienteService.deletarCliente(id);
+	public void deletarCliente(@PathVariable Long clienteId) {
+		clienteService.deletarCliente(clienteId);
 	}
 
-	@GetMapping("/por-nome/{nome}")
-	public List<ClienteResumoModel> clientePorNome(@PathVariable String nome) {
-		List<Cliente> clientes = clienteService.findClienteByNome(nome);
-		
-		return clienteResumoModelAssembler.toCollectionModel(clientes);
-	}
-
-	@GetMapping("/por-cpf/{cpf}")
-	public List<ClienteResumoModel>clientePorCpf(@PathVariable String cpf) {
-		List<Cliente> clientes = clienteService.findClienteByCpf(cpf);
-		
-		return clienteResumoModelAssembler.toCollectionModel(clientes);
-	}
 	
 }

@@ -1,9 +1,9 @@
 package com.asce1dev.cadastroaefeeft.api.model;
 
-import java.time.OffsetDateTime;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.OffsetDateTime;
 
 @Getter
 @Setter

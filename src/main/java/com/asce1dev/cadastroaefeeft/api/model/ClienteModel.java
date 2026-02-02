@@ -1,12 +1,12 @@
 package com.asce1dev.cadastroaefeeft.api.model;
 
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
-
 import com.asce1dev.cadastroaefeeft.domain.model.Categoria;
 import com.asce1dev.cadastroaefeeft.domain.model.EstadoCivil;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 
 @Getter
 @Setter

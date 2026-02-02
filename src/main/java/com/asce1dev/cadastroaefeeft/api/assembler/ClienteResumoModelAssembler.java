@@ -1,14 +1,13 @@
 package com.asce1dev.cadastroaefeeft.api.assembler;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.asce1dev.cadastroaefeeft.api.model.ClienteResumoModel;
+import com.asce1dev.cadastroaefeeft.domain.model.Cliente;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.asce1dev.cadastroaefeeft.api.model.ClienteResumoModel;
-import com.asce1dev.cadastroaefeeft.domain.model.Cliente;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ClienteResumoModelAssembler {

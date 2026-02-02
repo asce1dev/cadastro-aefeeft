@@ -1,11 +1,10 @@
 package com.asce1dev.cadastroaefeeft.api.assembler;
 
+import com.asce1dev.cadastroaefeeft.api.model.input.ClienteInput;
+import com.asce1dev.cadastroaefeeft.domain.model.Cliente;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.asce1dev.cadastroaefeeft.api.model.input.ClienteInput;
-import com.asce1dev.cadastroaefeeft.domain.model.Cliente;
 
 @Component
 public class ClienteInputDisassembler {
