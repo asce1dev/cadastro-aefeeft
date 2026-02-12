@@ -41,7 +41,6 @@ public class ClienteInput {
 	private String rg;
 	private String dataEmissaoRg;
 
-	@NotNull
 	private EstadoCivil estadoCivil;
 
 	@NotNull

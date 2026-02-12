@@ -43,7 +43,7 @@ public class Cliente {
 	private String padrao;
 	private String identificacaoUnica;
 	private String rg;
-	private String dataEmissaoRg;
+	private LocalDate dataEmissaoRg;
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)

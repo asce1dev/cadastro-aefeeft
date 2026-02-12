@@ -19,7 +19,7 @@ public class Problem {
 	private String title;
 	private String detail;
 	private String userMessage;
-	private List<Object> objects;
+	private List<Problem.Object> objects;
 	
 	@Getter
 	@Builder

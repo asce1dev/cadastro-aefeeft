@@ -68,5 +68,4 @@ public class ClienteController {
 		clienteService.deletarCliente(clienteId);
 	}
 
-	
 }
