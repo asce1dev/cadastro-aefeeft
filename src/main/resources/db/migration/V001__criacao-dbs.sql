@@ -27,6 +27,15 @@ create table cliente (
     classe varchar(25),
     data_atualizacao dateTime, 
     data_cadastro dateTime,
-	
+    primary key (id)
+) engine=InnoDB default charset=utf8;
+
+create table usuario (
+    id bigint not null auto_increment,
+    username varchar(50) not null,
+    CONSTRAINT uk_usuario_username UNIQUE (username),
+    password varchar(60) not null,
+    role ENUM('ADMIN', 'USER') not null,
+    active boolean default true not null,
     primary key (id)
 ) engine=InnoDB default charset=utf8;
