@@ -12,8 +12,9 @@ public enum ProblemType {
 	RECURSO_NAO_ENCONTRADO("/recurso-nao-encontrado", "Recurso Não Encontrado."),
 	ENTIDADE_EM_USO("/entidade-em-uso","Entidade em uso"), 
 	ERRO_NEGOCIO("/erro-negocio", "Erro de Negocio"),
-	CPF_DUPLICADO("/cpf-duplicado", "CPF Duplicado");
-	
+	CPF_DUPLICADO("/cpf-duplicado", "CPF Duplicado"),
+	ACESSO_NEGADO ("/acesso-negado", "Acesso Negado");
+
 	private String title;
 	private String uri;
 	

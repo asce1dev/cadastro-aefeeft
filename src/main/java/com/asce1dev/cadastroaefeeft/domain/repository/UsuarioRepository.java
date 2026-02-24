@@ -1,5 +1,6 @@
 package com.asce1dev.cadastroaefeeft.domain.repository;
 
+import com.asce1dev.cadastroaefeeft.domain.model.Role;
 import com.asce1dev.cadastroaefeeft.domain.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -7,4 +8,5 @@ import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     Optional<Usuario> findByUsername(String username);
+    boolean existsByRole(Role role);
 }

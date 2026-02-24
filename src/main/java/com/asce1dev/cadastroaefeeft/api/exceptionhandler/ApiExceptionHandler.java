@@ -18,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -78,6 +80,32 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 				.build();
 
 		return handleExceptionInternal(ex, problem, headers, status, request);
+	}
+
+	@ExceptionHandler(AuthenticationException.class)
+	public ResponseEntity<?> handleAuthentication(AuthenticationException ex, WebRequest request) {
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		ProblemType problemType = ProblemType.ACESSO_NEGADO; // se não existir, use ERRO_DE_SISTEMA por enquanto ou crie depois
+		String detail = "Você precisa estar autenticado para acessar este recurso.";
+
+		Problem problem = createProblemBuilder(status, problemType, detail)
+				.userMessage(detail)
+				.build();
+
+		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+	}
+
+	@ExceptionHandler(AccessDeniedException.class)
+	public ResponseEntity<?> handleAccessDenied(AccessDeniedException ex, WebRequest request) {
+		HttpStatus status = HttpStatus.FORBIDDEN;
+		ProblemType problemType = ProblemType.ACESSO_NEGADO; // idem
+		String detail = "Você não tem permissão para executar esta operação.";
+
+		Problem problem = createProblemBuilder(status, problemType, detail)
+				.userMessage(detail)
+				.build();
+
+		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
 	}
 
 	@ExceptionHandler(Exception.class)

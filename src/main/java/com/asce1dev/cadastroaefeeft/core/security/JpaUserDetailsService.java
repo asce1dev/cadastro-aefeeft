@@ -27,7 +27,7 @@ public class JpaUserDetailsService implements UserDetailsService{
             throw new DisabledException("Usuário inativo");
         }
 
-        var authority = new SimpleGrantedAuthority("ROLE" + usuario.getRole().name());
+        var authority = new SimpleGrantedAuthority("ROLE_" + usuario.getRole().name());
 
         return new User(usuario.getUsername(), usuario.getPassword(), List.of(authority));
     }
