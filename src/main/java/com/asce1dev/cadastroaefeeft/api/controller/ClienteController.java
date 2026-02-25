@@ -34,7 +34,7 @@ public class ClienteController {
 			@PageableDefault(sort = "nome", direction = Sort.Direction.ASC) Pageable pageable) {
 
 		Page<Cliente> page = clienteService.listarClientes(nome, cpf, pageable);
-		return page.map(clienteResumoModelAssembler::toModel);
+		return clienteResumoModelAssembler.toPageModel(page);
 	}
 
 	@GetMapping("/{clienteId}")

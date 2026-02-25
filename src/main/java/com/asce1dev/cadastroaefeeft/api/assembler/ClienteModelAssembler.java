@@ -20,7 +20,7 @@ public class ClienteModelAssembler {
 		return modelMapper.map(cliente, ClienteModel.class);
 	}
 	
-	public List<ClienteModel> toCollectionModel(List<Cliente> clientes) {
+	public List<ClienteModel> toCollectionzModel(List<Cliente> clientes) {
 		return clientes.stream()
 				.map(cliente -> toModel(cliente))
 				.collect(Collectors.toList());

@@ -4,10 +4,8 @@ import com.asce1dev.cadastroaefeeft.api.model.ClienteResumoModel;
 import com.asce1dev.cadastroaefeeft.domain.model.Cliente;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class ClienteResumoModelAssembler {
@@ -18,10 +16,8 @@ public class ClienteResumoModelAssembler {
 	public ClienteResumoModel toModel(Cliente cliente) {
 		return modelMapper.map(cliente, ClienteResumoModel.class);
 	}
-	
-	public List<ClienteResumoModel> toCollectionModel(List<Cliente> clientes) {
-		return clientes.stream()
-				.map(cliente -> toModel(cliente))
-				.collect(Collectors.toList());
+
+	public Page<ClienteResumoModel> toPageModel(Page<Cliente> clientes) {
+		return clientes.map(cliente -> toModel(cliente));
 	}
 }

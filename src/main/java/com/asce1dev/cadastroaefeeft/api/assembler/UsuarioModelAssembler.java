@@ -21,4 +21,9 @@ public class UsuarioModelAssembler {
         return modelMapper.map(usuario, UsuarioModel.class);
     }
 
+    public List<UsuarioModel> toCollectionModel(List<Usuario> usuarios) {
+        return usuarios.stream()
+                .map(usuario -> toModel(usuario))
+                .collect(Collectors.toList());
+    }
 }
